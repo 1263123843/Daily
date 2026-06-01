@@ -22,11 +22,13 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Generate Gradle Wrapper
+        uses: gradle/wrapper@v3
+        with:
+          gradle-version: '8.7'
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
-
-      - name: Generate Gradle Wrapper
-        run: gradle wrapper --gradle-version 8.7
 
       - name: Accept Android licenses
         run: |
