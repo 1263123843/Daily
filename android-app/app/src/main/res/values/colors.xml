@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 品牌色 -->
+    <color name="primary">#FF7043</color>
+    <color name="primary_dark">#E64A19</color>
+    <color name="primary_light">#FFAB91</color>
+
+    <color name="secondary">#66BB6A</color>
+    <color name="secondary_dark">#388E3C</color>
+    <color name="secondary_light">#A5D6A7</color>
+
+    <!-- 背景色 -->
+    <color name="background">#FAFAFA</color>
+    <color name="surface">#FAFAFA</color>
+    <color name="error">#EF5350</color>
+
+    <!-- 状态色 -->
+    <color name="status_safe">#66BB6A</color>
+    <color name="status_warning">#FFA726</color>
+    <color name="status_danger">#EF5350</color>
+
+    <!-- 文本色 -->
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="on_background">#1C1B1F</color>
+    <color name="on_surface">#1C1B1F</color>
+    <color name="on_error">#FFFFFF</color>
+    <color name="on_surface_variant">#49454F</color>
+
+    <!-- 壁纸预设色 -->
+    <color name="wallpaper_orange">#FF7043</color>
+    <color name="wallpaper_green">#66BB6A</color>
+    <color name="wallpaper_blue">#5C6BC0</color>
+    <color name="wallpaper_pink">#EC407A</color>
+    <color name="wallpaper_purple">#AB47BC</color>
+    <color name="wallpaper_teal">#26A69A</color>
+
+    <!-- 关系标签色 -->
+    <color name="relationship_parent">#FF7043</color>
+    <color name="relationship_partner">#EC407A</color>
+    <color name="relationship_friend">#5C6BC0</color>
+    <color name="relationship_roommate">#26A69A</color>
+    <color name="relationship_other">#78909C</color>
+</resources>

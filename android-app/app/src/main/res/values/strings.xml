@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 应用名称 -->
+    <string name="app_name">Daily</string>
+
+    <!-- 导航 -->
+    <string name="nav_home">首页</string>
+    <string name="nav_wallpaper">壁纸</string>
+    <string name="nav_contacts">联系人</string>
+    <string name="nav_settings">设置</string>
+
+    <!-- 引导页 -->
+    <string name="onboarding_title">Daily</string>
+    <string name="onboarding_subtitle">你的安全守护</string>
+    <string name="onboarding_desc">Daily 是一款专为独居青年设计的安全守护应用。通过智能签到机制，让家人和朋友随时了解你的安全状态。</string>
+    <string name="onboarding_intro_title">安全守护，触手可及</string>
+    <string name="onboarding_intro_desc">无需手动签到，锁屏解锁即自动签到。\n设置专属壁纸，让安全看得见。</string>
+    <string name="onboarding_wallpaper_title">设置专属壁纸</string>
+    <string name="onboarding_wallpaper_desc">选择你喜欢的颜色，生成专属安全壁纸。\n每次看到壁纸，都是一次安心的确认。</string>
+    <string name="onboarding_contact_title">添加紧急联系人</string>
+    <string name="onboarding_contact_desc">添加最多 3 位紧急联系人，\n确保在需要时能及时通知到他们。</string>
+    <string name="onboarding_skip">跳过</string>
+    <string name="onboarding_next">下一步</string>
+    <string name="onboarding_done">开始使用</string>
+
+    <!-- 首页 -->
+    <string name="home_title">Daily</string>
+    <string name="home_safe">安全</string>
+    <string name="home_warning">警告</string>
+    <string name="home_danger">异常</string>
+    <string name="home_last_checkin">上次签到</string>
+    <string name="home_consecutive_days">连续签到 %d 天</string>
+    <string name="home_manual_checkin">手动签到</string>
+    <string name="home_checkin_success">签到成功</string>
+    <string name="home_checkin_failed">签到失败</string>
+    <string name="home_loading">加载中…</string>
+    <string name="home_retry">重试</string>
+
+    <!-- 壁纸 -->
+    <string name="wallpaper_title">壁纸设置</string>
+    <string name="wallpaper_preset_orange">活力橙</string>
+    <string name="wallpaper_preset_green">安全绿</string>
+    <string name="wallpaper_preset_blue">宁静蓝</string>
+    <string name="wallpaper_preset_pink">温馨粉</string>
+    <string name="wallpaper_preset_purple">梦幻紫</string>
+    <string name="wallpaper_preset_teal">清新青</string>
+    <string name="wallpaper_selected">已选择</string>
+
+    <!-- 联系人 -->
+    <string name="contacts_title">紧急联系人</string>
+    <string name="contacts_empty">暂无紧急联系人，点击右下角 + 添加</string>
+    <string name="contacts_add">添加联系人</string>
+    <string name="contacts_delete">删除联系人</string>
+    <string name="contacts_delete_confirm_title">确认删除</string>
+    <string name="contacts_delete_confirm_text">确定要删除联系人「%s」吗？</string>
+    <string name="contacts_confirm_delete">删除</string>
+    <string name="contacts_cancel">取消</string>
+    <string name="contacts_add_dialog_title">添加紧急联系人</string>
+    <string name="contacts_name_label">姓名</string>
+    <string name="contacts_relationship_label">关系</string>
+    <string name="contacts_phone_label">手机号</string>
+    <string name="contacts_sms_code_label">验证码</string>
+    <string name="contacts_send_code">发送验证码</string>
+    <string name="contacts_send_code_countdown">%ds</string>
+    <string name="contacts_confirm_add">确认添加</string>
+    <string name="contacts_verifying">验证中…</string>
+    <string name="relationship_parent">父母</string>
+    <string name="relationship_partner">伴侣</string>
+    <string name="relationship_friend">朋友</string>
+    <string name="relationship_roommate">室友</string>
+    <string name="relationship_other">其他</string>
+
+    <!-- 设置 -->
+    <string name="settings_title">设置</string>
+    <string name="settings_nickname">昵称</string>
+    <string name="settings_nickname_hint">点击设置昵称</string>
+    <string name="settings_dark_mode">深色模式</string>
+    <string name="settings_dark_mode_subtitle">跟随系统主题设置</string>
+    <string name="settings_clear_data">清除所有数据</string>
+    <string name="settings_clear_data_subtitle">清除本地缓存和偏好设置</string>
+    <string name="settings_clear_data_confirm_title">清除所有数据</string>
+    <string name="settings_clear_data_confirm_text">确定要清除所有本地数据和偏好设置吗？此操作不可恢复。</string>
+    <string name="settings_clear_data_confirm">清除</string>
+    <string name="settings_app_version">应用版本</string>
+    <string name="settings_app_version_value">1.0.0</string>
+
+    <!-- 通用 -->
+    <string name="common_loading">加载中…</string>
+    <string name="common_error">出错了</string>
+    <string name="common_retry">重试</string>
+    <string name="common_cancel">取消</string>
+    <string name="common_confirm">确认</string>
+    <string name="common_save">保存</string>
+    <string name="common_delete">删除</string>
+</resources>
