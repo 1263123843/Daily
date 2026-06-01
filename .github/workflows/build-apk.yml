@@ -18,24 +18,28 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: gradle
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Download Gradle 8.7
+      - name: Download Gradle 8.7 and generate wrapper
         run: |
           curl -L -o gradle-8.7-bin.zip https://services.gradle.org/distributions/gradle-8.7-bin.zip
           unzip gradle-8.7-bin.zip
           sudo mv gradle-8.7 /opt/gradle
           sudo ln -sf /opt/gradle/bin/gradle /usr/local/bin/gradle
           gradle --version
+          # Generate gradle-wrapper.jar so ./gradlew works
+          gradle wrapper --gradle-version 8.7
 
       - name: Accept Android licenses
         run: |
           yes | sdkmanager --licenses || true
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
       - name: Build Debug APK
-        run: gradle assembleDebug
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
