@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Daily App Material3 主题 -->
+    <!-- Daily App Material3 主题 (纯 Compose 项目，不需要 Material 属性) -->
     <style name="Theme.Daily" parent="android:Theme.Material.Light.NoActionBar">
-        <!-- 浅色模式品牌色 -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/secondary</item>
         <item name="android:colorBackground">@color/background</item>
         <item name="android:statusBarColor">@color/background</item>
         <item name="android:navigationBarColor">@color/surface</item>
