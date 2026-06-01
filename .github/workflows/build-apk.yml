@@ -19,13 +19,20 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Download Gradle 8.7
         run: |
           curl -L -o gradle-8.7-bin.zip https://services.gradle.org/distributions/gradle-8.7-bin.zip
           unzip gradle-8.7-bin.zip
           sudo mv gradle-8.7 /opt/gradle
-          sudo ln -s /opt/gradle/bin/gradle /usr/local/bin/gradle
+          sudo ln -sf /opt/gradle/bin/gradle /usr/local/bin/gradle
           gradle --version
+
+      - name: Accept Android licenses
+        run: |
+          yes | sdkmanager --licenses || true
 
       - name: Build Debug APK
         run: gradle assembleDebug
