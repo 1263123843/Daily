@@ -23,15 +23,10 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Download Gradle 8.7 and generate wrapper
-        run: |
-          curl -L -o gradle-8.7-bin.zip https://services.gradle.org/distributions/gradle-8.7-bin.zip
-          unzip gradle-8.7-bin.zip
-          sudo mv gradle-8.7 /opt/gradle
-          sudo ln -sf /opt/gradle/bin/gradle /usr/local/bin/gradle
-          gradle --version
-          # Generate gradle-wrapper.jar so ./gradlew works
-          gradle wrapper --gradle-version 8.7
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+        with:
+          gradle-version: 8.7
 
       - name: Accept Android licenses
         run: |
@@ -39,7 +34,7 @@ jobs:
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleDebug --info --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
