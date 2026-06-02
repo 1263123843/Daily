@@ -35,7 +35,21 @@ jobs:
 
       - name: Build Debug APK
         run: |
-          gradle assembleDebug --stacktrace 2>&1 | tee build-output.log
+          gradle assembleDebug --stacktrace > build-output.log 2>&1
+          cat build-output.log
+
+      - name: Verify APK was built
+        run: |
+          APK_COUNT=$(find app/build/outputs/apk/debug -name "*.apk" -type f 2>/dev/null | wc -l)
+          echo "Found $APK_COUNT APK files"
+          if [ "$APK_COUNT" -eq 0 ]; then
+            echo "::error::No APK files found in app/build/outputs/apk/debug/"
+            echo "=== build-output.log ==="
+            cat build-output.log
+            exit 1
+          fi
+          ls -lh app/build/outputs/apk/debug/*.apk
+          echo "APK verification passed!"
 
       - name: Upload build logs
         if: always()
@@ -44,16 +58,8 @@ jobs:
           name: build-logs
           path: build-output.log
 
-      - name: List APK outputs
-        if: always()
-        run: |
-          echo "=== APK output directory ==="
-          ls -la app/build/outputs/apk/debug/ 2>/dev/null || echo "Directory not found"
-          echo "=== All outputs ==="
-          find app/build/outputs -name "*.apk" 2>/dev/null || echo "No APKs found"
-
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: daily-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: app/build/outputs/apk/debug/app-debug.apk
