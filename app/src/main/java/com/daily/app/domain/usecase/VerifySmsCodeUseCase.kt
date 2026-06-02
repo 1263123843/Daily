@@ -38,15 +38,13 @@ class VerifySmsCodeUseCase @Inject constructor(
 
             val request = SmsVerifyRequest(phone = formattedPhone, code = params.code)
 
-            when (val result = remoteDataSource.verifySmsCode(request)) {
-                is Result.Success -> {
-                    val verified = result.getOrNull()?.verified ?: false
-                    Result.Success(verified)
-                }
-                is Result.Failure -> {
-                    val e = result.exceptionOrNull()
-                    Result.Error(e, "验证码校验失败: ${e?.message}")
-                }
+            val result = remoteDataSource.verifySmsCode(request)
+            if (result.isSuccess) {
+                val verified = result.getOrNull()?.verified ?: false
+                Result.Success(verified)
+            } else {
+                val e = result.exceptionOrNull()
+                Result.Error(e, "验证码校验失败: ${e?.message}")
             }
         }
     }

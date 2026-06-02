@@ -57,27 +57,23 @@ class AddContactUseCase @Inject constructor(
 
             // 4. 发送短信验证码
             val sendRequest = SmsSendRequest(phone = formattedPhone)
-            when (val sendResult = remoteDataSource.sendSmsCode(sendRequest)) {
-                is Result.Success -> { /* 发送成功，继续 */ }
-                is Result.Failure -> {
-                    val e = sendResult.exceptionOrNull()
-                    return@withContext Result.Error(e, "发送验证码失败: ${e?.message}")
-                }
+            val sendResult = remoteDataSource.sendSmsCode(sendRequest)
+            if (!sendResult.isSuccess) {
+                val e = sendResult.exceptionOrNull()
+                return@withContext Result.Error(e, "发送验证码失败: ${e?.message}")
             }
 
             // 5. 验证短信验证码
             val verifyRequest = SmsVerifyRequest(phone = formattedPhone, code = params.smsCode)
-            when (val verifyResult = remoteDataSource.verifySmsCode(verifyRequest)) {
-                is Result.Success -> {
-                    val verified = verifyResult.getOrNull()?.verified ?: false
-                    if (!verified) {
-                        return@withContext Result.Error(null, "验证码错误")
-                    }
+            val verifyResult = remoteDataSource.verifySmsCode(verifyRequest)
+            if (verifyResult.isSuccess) {
+                val verified = verifyResult.getOrNull()?.verified ?: false
+                if (!verified) {
+                    return@withContext Result.Error(null, "验证码错误")
                 }
-                is Result.Failure -> {
-                    val e = verifyResult.exceptionOrNull()
-                    return@withContext Result.Error(e, "验证码校验失败: ${e?.message}")
-                }
+            } else {
+                val e = verifyResult.exceptionOrNull()
+                return@withContext Result.Error(e, "验证码校验失败: ${e?.message}")
             }
 
             // 6. 手机号验证通过，保存联系人

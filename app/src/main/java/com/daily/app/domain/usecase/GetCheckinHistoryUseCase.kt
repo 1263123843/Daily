@@ -30,31 +30,29 @@ class GetCheckinHistoryUseCase @Inject constructor(
 
     override suspend operator fun invoke(params: CheckinHistoryParams): Result<List<Checkin>> {
         return withContext(Dispatchers.IO) {
-            when (val result = remoteDataSource.getCheckinHistory(params.page, params.pageSize)) {
-                is Result.Success -> {
-                    val paginated = result.getOrNull() ?: return@withContext Result.Error(
-                        null, "签到历史数据为空"
+            val result = remoteDataSource.getCheckinHistory(params.page, params.pageSize)
+            if (result.isSuccess) {
+                val paginated = result.getOrNull() ?: return@withContext Result.Error(
+                    null, "签到历史数据为空"
+                )
+                val checkins = paginated.items.map { response ->
+                    Checkin(
+                        checkinId = response.checkinId,
+                        userId = "", // API 响应中不包含 userId，由上层补充
+                        checkinTime = parseInstant(response.checkinTime),
+                        latitude = null,
+                        longitude = null,
+                        source = when (response.status?.lowercase()) {
+                            "auto" -> com.daily.app.domain.model.CheckinSource.AUTO_UNLOCK
+                            else -> com.daily.app.domain.model.CheckinSource.MANUAL
+                        },
+                        deviceId = null
                     )
-                    val checkins = paginated.items.map { response ->
-                        Checkin(
-                            checkinId = response.checkinId,
-                            userId = "", // API 响应中不包含 userId，由上层补充
-                            checkinTime = parseInstant(response.checkinTime),
-                            latitude = null,
-                            longitude = null,
-                            source = when (response.status?.lowercase()) {
-                                "auto" -> com.daily.app.domain.model.CheckinSource.AUTO_UNLOCK
-                                else -> com.daily.app.domain.model.CheckinSource.MANUAL
-                            },
-                            deviceId = null
-                        )
-                    }
-                    Result.Success(checkins)
                 }
-                is Result.Failure -> {
-                    val e = result.exceptionOrNull()
-                    Result.Error(e, "获取签到历史失败: ${e?.message}")
-                }
+                Result.Success(checkins)
+            } else {
+                val e = result.exceptionOrNull()
+                Result.Error(e, "获取签到历史失败: ${e?.message}")
             }
         }
     }

@@ -12,13 +12,22 @@ import android.os.Looper
 import android.service.wallpaper.WallpaperService
 import android.view.SurfaceHolder
 import android.util.Log
-import com.daily.app.data.local.UserPreferences
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+
+private val Context.wallpaperDataStore: androidx.datastore.core.DataStore<Preferences> by preferencesDataStore(
+    name = "user_preferences"
+)
+
+private val KEY_CURRENT_WALLPAPER_URI = stringPreferencesKey("current_wallpaper_uri")
 
 /**
  * A simplified WallpaperService for the Daily app.
@@ -123,19 +132,9 @@ class WallpaperService : WallpaperService() {
         private fun loadWallpaperBitmap() {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    val prefs = (context().applicationContext
-                        .getSystemService(Context.APPLICATION_SERVICE) as? android.app.Application
-                        ?.let { com.daily.app.DailyApplication.getInstance() }
-                        ?: context().applicationContext) as? android.app.Application
-
-                    val uri = UserPreferences((context().applicationContext as android.app.Application).hiltComponent?.let {
-                        // Direct access — in production this is handled by Hilt
-                        context().applicationContext
-                    } ?: context().applicationContext).currentWallpaperUri.first()
-
-                    // Re-check after the coroutine switch — we read from prefs directly
-                    val pref = UserPreferences(context().applicationContext as android.app.Application)
-                    val wallpaperUriStr = pref.currentWallpaperUri.first()
+                    val wallpaperUriStr = context().wallpaperDataStore.data
+                        .map { it[KEY_CURRENT_WALLPAPER_URI] }
+                        .first()
                     wallpaperUri = wallpaperUriStr
 
                     currentBitmap?.recycle()

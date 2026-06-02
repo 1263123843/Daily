@@ -11,7 +11,7 @@ import com.daily.app.data.local.UserPreferences
 import com.daily.app.domain.model.CheckinSource
 import com.daily.app.domain.usecase.CheckinParams
 import com.daily.app.domain.usecase.ICheckinUseCase
-import com.daily.app.domain.util.Result
+import com.daily.app.util.Result
 
 /**
  * WorkManager worker that performs an automatic check-in when the user unlocks their device.
@@ -50,13 +50,13 @@ class CheckinWorker @AssistedInject constructor(
 
             val checkinParams = CheckinParams(
                 userId = "",       // Empty — UseCase resolves from stored JWT token
-                lat = null,
-                lng = null,
+                latitude = null,
+                longitude = null,
                 source = CheckinSource.AUTO_UNLOCK,
                 deviceId = deviceId,
             )
 
-            when (val result = checkinUseCase.execute(checkinParams)) {
+            when (val result = checkinUseCase(checkinParams)) {
                 is Result.Success -> {
                     Log.d(TAG, "Check-in successful: checkinId=${result.data.checkinId}")
                     Result.success()

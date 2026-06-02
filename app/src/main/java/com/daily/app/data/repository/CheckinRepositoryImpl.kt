@@ -141,15 +141,12 @@ class CheckinRepositoryImpl @Inject constructor(
                     source = pending.source
                 )
 
-                when (val result = remoteDataSource.checkin(request)) {
-                    is Result.Success -> {
-                        localDataSource.markPendingAsSynced(pending.id)
-                        successCount++
-                    }
-                    is Result.Failure -> {
-                        // 记录重试次数（实际实现可能需要在 entity 中更新 retryCount）
-                        // 此处简化处理，仅跳过该条记录
-                    }
+                if (result.isSuccess) {
+                    localDataSource.markPendingAsSynced(pending.id)
+                    successCount++
+                } else {
+                    // 记录重试次数（实际实现可能需要在 entity 中更新 retryCount）
+                    // 此处简化处理，仅跳过该条记录
                 }
             }
 

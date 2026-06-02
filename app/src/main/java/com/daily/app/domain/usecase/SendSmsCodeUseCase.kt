@@ -33,12 +33,12 @@ class SendSmsCodeUseCase @Inject constructor(
 
             val request = SmsSendRequest(phone = formattedPhone)
 
-            when (val result = remoteDataSource.sendSmsCode(request)) {
-                is Result.Success -> Result.Success(Unit)
-                is Result.Failure -> {
-                    val e = result.exceptionOrNull()
-                    Result.Error(e, "发送验证码失败: ${e?.message}")
-                }
+            val result = remoteDataSource.sendSmsCode(request)
+            if (result.isSuccess) {
+                Result.Success(Unit)
+            } else {
+                val e = result.exceptionOrNull()
+                Result.Error(e, "发送验证码失败: ${e?.message}")
             }
         }
     }

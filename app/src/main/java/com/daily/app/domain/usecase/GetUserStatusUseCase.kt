@@ -26,26 +26,24 @@ class GetUserStatusUseCase @Inject constructor(
 
     override suspend operator fun invoke(): Result<UserStatus> {
         return withContext(Dispatchers.IO) {
-            when (val result = remoteDataSource.getUserStatus()) {
-                is Result.Success -> {
-                    val response = result.getOrNull() ?: return@withContext Result.Error(
-                        null, "用户状态数据为空"
-                    )
-                    val status = UserStatus(
-                        userId = response.userId,
-                        nickname = response.nickname,
-                        status = response.status,
-                        lastCheckinTime = response.lastCheckinTime,
-                        lastCheckinAgoMinutes = response.lastCheckinAgoMinutes,
-                        consecutiveDays = response.consecutiveDays,
-                        emergencyContactsCount = response.emergencyContactsCount
-                    )
-                    Result.Success(status)
-                }
-                is Result.Failure -> {
-                    val e = result.exceptionOrNull()
-                    Result.Error(e, "获取用户状态失败: ${e?.message}")
-                }
+            val result = remoteDataSource.getUserStatus()
+            if (result.isSuccess) {
+                val response = result.getOrNull() ?: return@withContext Result.Error(
+                    null, "用户状态数据为空"
+                )
+                val status = UserStatus(
+                    userId = response.userId,
+                    nickname = response.nickname,
+                    status = response.status,
+                    lastCheckinTime = response.lastCheckinTime,
+                    lastCheckinAgoMinutes = response.lastCheckinAgoMinutes,
+                    consecutiveDays = response.consecutiveDays,
+                    emergencyContactsCount = response.emergencyContactsCount
+                )
+                Result.Success(status)
+            } else {
+                val e = result.exceptionOrNull()
+                Result.Error(e, "获取用户状态失败: ${e?.message}")
             }
         }
     }

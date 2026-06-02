@@ -67,22 +67,22 @@ class ContactRepositoryImpl @Inject constructor(
                     phoneHash = "" // 哈希由上层计算后传入
                 )
 
-                when (val result = remoteDataSource.createContact(request)) {
-                    is Result.Success -> {
+                if (result.isSuccess) {
                         // API 创建成功，写入本地缓存
+                        val response = result.getOrNull()!!
                         val entity = ContactEntity(
                             userId = contact.userId,
                             name = contact.name,
                             relationship = contact.relationship.name.lowercase(),
                             phoneEncrypted = request.phoneEncrypted,
                             phoneHash = request.phoneHash,
-                            isVerified = result.value.isVerified
+                            isVerified = response.isVerified
                         )
                         localDataSource.saveContact(entity)
-                        Result.success(contact.copy(contactId = result.value.contactId))
+                        Result.success(contact.copy(contactId = response.contactId))
+                    } else {
+                        Result.failure(result.exceptionOrNull() ?: RuntimeException("添加联系人失败"))
                     }
-                    is Result.Failure -> Result.failure(result.exceptionOrNull() ?: RuntimeException("添加联系人失败"))
-                }
             } catch (e: Exception) {
                 Result.failure(e)
             }
@@ -97,14 +97,13 @@ class ContactRepositoryImpl @Inject constructor(
     override suspend fun delete(id: Long, userId: String): Result<Unit> {
         return withContext(Dispatchers.IO) {
             try {
-                when (val result = remoteDataSource.deleteContact(id)) {
-                    is Result.Success -> {
+                if (result.isSuccess) {
                         // API 删除成功，删除本地缓存
                         localDataSource.deleteContactById(id, userId)
                         Result.success(Unit)
+                    } else {
+                        Result.failure(result.exceptionOrNull() ?: RuntimeException("删除联系人失败"))
                     }
-                    is Result.Failure -> Result.failure(result.exceptionOrNull() ?: RuntimeException("删除联系人失败"))
-                }
             } catch (e: Exception) {
                 Result.failure(e)
             }

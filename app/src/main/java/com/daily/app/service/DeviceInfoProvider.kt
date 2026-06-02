@@ -39,7 +39,7 @@ class DeviceInfoProvider @JvmOverloads constructor(
      * Call from a background thread or use [getDeviceInfoAsync] for coroutine contexts.
      */
     fun getDeviceInfo(): DeviceInfo {
-        val deviceFingerprint = runBlocking { userPreferences.getDeviceFingerprint().first() }
+        val deviceFingerprint = runBlocking { userPreferences.getDeviceFingerprint() }
         val appVersion = getAppVersion()
         return DeviceInfo(
             deviceId = deviceFingerprint.ifEmpty { "unknown" },
@@ -54,7 +54,7 @@ class DeviceInfoProvider @JvmOverloads constructor(
      * Avoids the `runBlocking` overhead by collecting the flow directly.
      */
     suspend fun getDeviceInfoAsync(): DeviceInfo {
-        val deviceFingerprint = userPreferences.getDeviceFingerprint().first()
+        val deviceFingerprint = userPreferences.getDeviceFingerprint()
         val appVersion = getAppVersion()
         return DeviceInfo(
             deviceId = deviceFingerprint.ifEmpty { "unknown" },

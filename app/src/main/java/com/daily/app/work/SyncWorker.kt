@@ -9,7 +9,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import com.daily.app.domain.usecase.ISyncCheckinsUseCase
 import com.daily.app.domain.usecase.SyncCheckinsParams
-import com.daily.app.domain.util.Result
+import com.daily.app.util.Result
 
 /**
  * WorkManager worker that syncs locally stored (pending) checkins with the server.
@@ -43,7 +43,7 @@ class SyncWorker @AssistedInject constructor(
         return try {
             Log.d(TAG, "Executing check-in sync, runAttempt=$runAttemptCount")
 
-            when (val result = syncCheckinsUseCase.execute(SyncCheckinsParams(userId = ""))) {
+            when (val result = syncCheckinsUseCase(SyncCheckinsParams(userId = ""))) {
                 is Result.Success -> {
                     Log.d(TAG, "Sync completed: ${result.data} checkins uploaded")
                     Result.success()
