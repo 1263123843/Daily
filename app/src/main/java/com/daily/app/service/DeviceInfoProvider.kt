@@ -8,7 +8,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.scopes.ApplicationScoped
-import com.daily.app.data.local.UserPreferences
+import com.daily.app.data.preferences.UserPreferences
 import com.daily.app.domain.model.DeviceInfo
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking

@@ -7,7 +7,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import com.daily.app.data.local.UserPreferences
+import com.daily.app.data.preferences.UserPreferences
 import com.daily.app.domain.model.CheckinSource
 import com.daily.app.domain.usecase.CheckinParams
 import com.daily.app.domain.usecase.ICheckinUseCase
