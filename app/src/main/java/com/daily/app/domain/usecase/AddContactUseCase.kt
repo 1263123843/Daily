@@ -85,15 +85,13 @@ class AddContactUseCase @Inject constructor(
                 isVerified = true
             )
 
-            when (val saveResult = repository.add(contact)) {
-                is Result.Success -> {
-                    val saved = saveResult.getOrNull() ?: contact
-                    Result.Success(saved)
-                }
-                is Result.Failure -> {
-                    val e = saveResult.exceptionOrNull()
-                    Result.Error(e, "保存联系人失败: ${e?.message}")
-                }
+            val saveResult = repository.add(contact)
+            if (saveResult.isSuccess) {
+                val saved = saveResult.getOrNull() ?: contact
+                Result.Success(saved)
+            } else {
+                val e = saveResult.exceptionOrNull()
+                Result.Error(e, "保存联系人失败: ${e?.message}")
             }
         }
     }

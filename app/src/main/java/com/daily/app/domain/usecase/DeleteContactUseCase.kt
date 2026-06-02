@@ -23,12 +23,12 @@ class DeleteContactUseCase @Inject constructor(
 
     override suspend operator fun invoke(params: DeleteContactParams): Result<Unit> {
         return withContext(Dispatchers.IO) {
-            when (val result = repository.delete(params.contactId, params.userId)) {
-                is Result.Success -> Result.Success(Unit)
-                is Result.Failure -> {
-                    val e = result.exceptionOrNull()
-                    Result.Error(e, "删除联系人失败: ${e?.message}")
-                }
+            val result = repository.delete(params.contactId, params.userId)
+            if (result.isSuccess) {
+                Result.Success(Unit)
+            } else {
+                val e = result.exceptionOrNull()
+                Result.Error(e, "删除联系人失败: ${e?.message}")
             }
         }
     }

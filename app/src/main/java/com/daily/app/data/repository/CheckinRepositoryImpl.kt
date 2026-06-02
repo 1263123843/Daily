@@ -141,6 +141,7 @@ class CheckinRepositoryImpl @Inject constructor(
                     source = pending.source
                 )
 
+                val result = remoteDataSource.checkin(request)
                 if (result.isSuccess) {
                     localDataSource.markPendingAsSynced(pending.id)
                     successCount++

@@ -1,6 +1,7 @@
 package com.daily.app.util
 
 import kotlinx.coroutines.flow.Flow
+// Result = com.daily.app.util.Result (sealed class with Success/Error/Loading)
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart

@@ -36,7 +36,18 @@ jobs:
       - name: Build Debug APK
         run: |
           gradle assembleDebug --stacktrace > build-output.log 2>&1
+          EXIT_CODE=$?
           cat build-output.log
+          exit $EXIT_CODE
+
+      - name: Show errors if build failed
+        if: failure()
+        run: |
+          echo "::error::Build failed. Showing last 100 lines of errors:"
+          grep -i "error:" build-output.log || true
+          grep -i "FAILURE" build-output.log || true
+          grep -i "e: " build-output.log || true
+          tail -100 build-output.log
 
       - name: Verify APK was built
         run: |
@@ -44,12 +55,10 @@ jobs:
           echo "Found $APK_COUNT APK files"
           if [ "$APK_COUNT" -eq 0 ]; then
             echo "::error::No APK files found in app/build/outputs/apk/debug/"
-            echo "=== build-output.log ==="
             cat build-output.log
             exit 1
           fi
           ls -lh app/build/outputs/apk/debug/*.apk
-          echo "APK verification passed!"
 
       - name: Upload build logs
         if: always()
